@@ -8,36 +8,34 @@ brick set to True Level Triggering so the scene control update method fires.
 
 '''
 import bge
+from Networking import Networking
+from Logging import Logging
     
 class SceneControl(object):
+    '''
+    this class is the main entry point and control of the game scene
+    '''
     def __init__(self,cont):
         self.cont = cont
         self.own = cont.owner
+        self.log = Logging("SceneControl","Debug")
+        #set up network socket
+        
+        self.networking = Networking()
+        #add the HUD
+        self.cont.activate(self.own.actuators["HUD"])
         
     def update(self):
-        pass
- 
-def isCont(object):
-	if str(object.__class__) == "<class 'SCA_PythonController'>":
-		return True
-	return False
-
-def msg(*args):
-	message = ""
-	for i in args:
-		message += str(i)
-		
-	if DEBUG_MESSAGES:
-		print('[DEBUG] ' + message)
-	
+        self.networking.update()
+    
 def main():
 	cont = bge.logic.getCurrentController()
 	own = cont.owner
 	
-	if 'my.sceneControl' not in own:
-		own['my.sceneControl'] = HookEmpty(cont)
+	if 'matrix.sceneControl' not in own:
+		own['matrix.sceneControl'] = SceneControl(cont)
 	else:
-		own['my.sceneControl'].update()
+		own['matrix.sceneControl'].update()
 	
 if bge.logic.getCurrentController().mode == 0:
 	main() 
