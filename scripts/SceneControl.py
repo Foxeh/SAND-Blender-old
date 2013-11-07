@@ -8,6 +8,7 @@ brick set to True Level Triggering so the scene control update method fires.
 
 '''
 import bge
+import finder
 from Networking import Networking
 from Logging import Logging
     
@@ -18,24 +19,28 @@ class SceneControl(object):
     def __init__(self,cont):
         self.cont = cont
         self.own = cont.owner
+        self.scene = bge.logic.getCurrentScene()
         self.log = Logging("SceneControl","Debug")
-        #set up network socket
-        
+        #set up network socket       
         self.networking = Networking()
         #add the HUD
         self.cont.activate(self.own.actuators["HUD"])
+        #spawn the player
+        bge.logic.sendMessage("PlayerSpawn", "", "PlayerSpawn", "SceneControl")
+        #change the scene camera to the player rig
+        #self.scene.active_camera =  self.scene.objects["FPS Camera"]
         
     def update(self):
         self.networking.update()
     
 def main():
-	cont = bge.logic.getCurrentController()
-	own = cont.owner
-	
-	if 'matrix.sceneControl' not in own:
-		own['matrix.sceneControl'] = SceneControl(cont)
-	else:
-		own['matrix.sceneControl'].update()
-	
+    cont = bge.logic.getCurrentController()
+    own = cont.owner
+    
+    if 'matrix.sceneControl' not in own:
+        own['matrix.sceneControl'] = SceneControl(cont)
+    else:
+        own['matrix.sceneControl'].update()
+
 if bge.logic.getCurrentController().mode == 0:
-	main() 
+    main() 
