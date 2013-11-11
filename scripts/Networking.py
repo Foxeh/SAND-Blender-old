@@ -25,7 +25,7 @@ class ProtocolHandler(object):
             
     def _dec2dot(numbericIP):
         if type(numbericIP) == types.StringType and not numbericIP.isdigit() :
-           return None
+            return None
         numIP = long(numbericIP)
         return "%d.%d.%d.%d" % ((numIP>>24)&0xFF, (numIP>>16)&0xFF, (numIP>>8)&0xFF, numIP&0xFF)
         

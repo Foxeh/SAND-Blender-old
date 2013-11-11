@@ -3,7 +3,9 @@ import struct
 import math, random
 import sys, time
 import types
-
+'''
+This is the enemy generator
+'''
 def dot2dec(ipForm, useHex=False):
     if type(ipForm) == types.StringType:
         ipf = ipForm.split(".")
