@@ -10,6 +10,7 @@ brick set to True Level Triggering (```) so the scene control update method fire
 import bge
 import finder
 from Networking import Networking
+from GunUdpListener import GunUdpListener
 from Logging import Logging
     
 class SceneControl(object):
@@ -25,6 +26,7 @@ class SceneControl(object):
         self.log = Logging("SceneControl","Debug")
         #set up network socket       
         self.sceneUpdates.append(Networking())
+        self.sceneUpdates.append(GunUdpListener())
         #add the HUD
         self.cont.activate(self.own.actuators["HUD"])
         #TODO: the player spawn doesn't work because of an issue with setting the active camera to the rig

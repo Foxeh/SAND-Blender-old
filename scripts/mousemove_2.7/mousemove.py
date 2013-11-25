@@ -56,6 +56,7 @@ ml{
 	(num) sensitivity = 2
 	(bool) invert = false
 	(bool) inherit = true
+	(bool) usegunfeed = false
 	
 	# inherit: parent object inherits left/right rotation
 	
@@ -124,6 +125,7 @@ class Core:
 		self.controls = Controls(self)
 	
 	def module(self):
+			
 		self.main()
 		
 		### Mouselook System ###
@@ -338,6 +340,12 @@ class Core:
 		
 class Mouselook:
 	def __init__(self, core, object=None):
+		
+		self.maxMouseX = 0;
+		self.minMouseX = 0;
+		self.maxMouseY = 0;
+		self.minMouseY = 0;
+		
 		self.core = core
 		
 		if object == None:
@@ -397,7 +405,34 @@ class Mouselook:
 		return (render.getWindowWidth(), render.getWindowHeight())
 		
 	def getMovement(self):
-		pos = logic.mouse.position
+		gunpos = self.core.cont.sensors["GunPos"]
+
+		if(self.props['usegunfeed']==False):
+			pos = logic.mouse.position
+		else:
+			if(gunpos.positive):
+				
+				pos = [ (float(i)/120)+0.5 for i in gunpos.bodies[gunpos.subjects.index("GunPos")].split(',')]
+				msg("Gun",pos[0],pos[1])
+			else:
+				pos = logic.mouse.position
+				#msg(self.core.cont.sensors["GunPos"].positive,dir(self.core.cont.sensors["GunPos"]))
+				pass
+					
+		#msg("Pos",pos)
+		
+		if (pos[0]>self.maxMouseX):
+			self.maxMouseX = pos[0]
+		if (pos[0]<self.minMouseX):
+			self.minMouseX = pos[0]
+		if (pos[1]>self.maxMouseY):
+			self.maxMouseY = pos[1]
+		if (pos[1]<self.minMouseY):
+			self.minMouseY = pos[1]
+		
+		msg(self.minMouseX," ",self.maxMouseX," ",self.minMouseY," ",self.maxMouseY)
+			
+		
 		realCenter = self.getCenter()
 		move = [realCenter[0] - pos[0], realCenter[1] - pos[1]]
 		

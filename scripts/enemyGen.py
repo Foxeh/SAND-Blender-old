@@ -4,7 +4,7 @@ import math, random
 import sys, time
 import types
 '''
-This is the enemy generator
+This is the enemy generatorp
 '''
 def dot2dec(ipForm, useHex=False):
     if type(ipForm) == types.StringType:
