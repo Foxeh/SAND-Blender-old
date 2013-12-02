@@ -412,10 +412,13 @@ class Mouselook:
 		else:
 			if(gunpos.positive):
 				
-				pos = [ (float(i)/120)+0.5 for i in gunpos.bodies[gunpos.subjects.index("GunPos")].split(',')]
-				msg("Gun",pos[0],pos[1])
+				gunPos = [ i for i in gunpos.bodies[gunpos.subjects.index("GunPos")].split(',')]
+				
+				pos = [float(gunPos[0])/100,float(gunPos[2])/100]
+				msg("Gun ",pos[0]," ",pos[1])
 			else:
 				pos = logic.mouse.position
+				#msg("Mouse ",pos[0]," ",pos[1])
 				#msg(self.core.cont.sensors["GunPos"].positive,dir(self.core.cont.sensors["GunPos"]))
 				pass
 					
@@ -430,7 +433,7 @@ class Mouselook:
 		if (pos[1]<self.minMouseY):
 			self.minMouseY = pos[1]
 		
-		msg(self.minMouseX," ",self.maxMouseX," ",self.minMouseY," ",self.maxMouseY)
+		#msg(self.minMouseX," ",self.maxMouseX," ",self.minMouseY," ",self.maxMouseY)
 			
 		
 		realCenter = self.getCenter()

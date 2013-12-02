@@ -42,7 +42,8 @@ class HUD(object):
                 if f:
                     f(self.msgSensor.bodies[self.msgSensor.subjects.index(subject)])
                 else:
-                    self.log.msg("Missing function for %s"%(subject))
+                    #self.log.msg("Missing function for %s"%(subject))
+                    pass
             
     def ammo(self,msg):
         self.ammoCount = int(msg)
