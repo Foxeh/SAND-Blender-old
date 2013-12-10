@@ -411,7 +411,7 @@ class Mouselook:
 			pos = logic.mouse.position
 		else:
 			if(gunpos.positive):
-				
+				#comment
 				gunPos = [ i for i in gunpos.bodies[gunpos.subjects.index("GunPos")].split(',')]
 				
 				pos = [float(gunPos[0])/100,float(gunPos[2])/100]
