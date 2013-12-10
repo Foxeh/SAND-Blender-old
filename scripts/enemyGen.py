@@ -31,7 +31,7 @@ HOST, PORT = "localhost", 10001
 # SOCK_DGRAM is the socket type to use for UDP sockets
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
   
-for j in range(1, 10):
+for j in range(1, 2):
     for i in srcnodes:
         src = int(dot2dec(i))
         
