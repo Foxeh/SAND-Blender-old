@@ -7,11 +7,10 @@ def display():
     scene = logic.getCurrentScene()
     writer = scene.objects["Writer"]
     
-    rank = 1
     name = logic.globalDict["initials"]
     score = 9
     
-    tup_entry = (rank, name, score)
+    tup_entry = (name, score)
     scores.append(tup_entry)
     scores.sort(key=lambda entry: entry[1])
     scores.reverse()
