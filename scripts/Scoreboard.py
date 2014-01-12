@@ -1,26 +1,18 @@
 from bge import logic
 
-scores = []
-
 def display():
     
     scene = logic.getCurrentScene()
     writer = scene.objects["Writer"]
     
-    name = logic.globalDict["initials"]
-    score = 9
+    rank = 1
+    initials = logic.globalDict["initials"]
+    score = 15
     
-    tup_entry = (name, score)
-    scores.append(tup_entry)
-    scores.sort(key=lambda entry: entry[1])
-    scores.reverse()
     
-    for entry, i in zip(scores, range(len(scores)):
-        new_writer = scene.addObject(writer, writer)
-        new_writer["Text"] = "{:d}.  {:s} - {:d}".format(i + 1, entry[0], entry[1])
-        
-        new_writer.worldPosition.y -= 1.25 * i
-        new_writer.localScale = writer.localScale
+    tup_entry = (rank, initials, score)
+    
+    writer["Text"] = "{:d}. {:s} - {:d}".format(*tup_entry)
     
     
 def setInitials():
@@ -28,5 +20,5 @@ def setInitials():
     scene = logic.getCurrentScene()
     initials = scene.objects["Initials"]
     
-    logic.globalDict["initials"] = initials["Text"].strip() 
-
+    logic.globalDict["initials"] = initials["Text"].strip()
+    

@@ -16,7 +16,8 @@ class HUD(object):
         self.ammoStatus = self.scene.objects["AmmoStatus"]
         self.clipStatus = self.scene.objects["ClipStatus"]
         self.goActuator = self.own.actuators["GameOverAct"]
-        self.endActuator = self.own.actuators["RemoveScenes"]
+        self.suspMainAct = self.own.actuators["SuspMain"]
+        self.suspHUDAct = self.own.actuators["SuspHUD"]
         self.testStatus = self.scene.objects["Tester"]
         self.msgSensor = self.cont.sensors["HUDMessage"]
         self.enemyCount = 0
@@ -58,9 +59,10 @@ class HUD(object):
         
         if int(msg) == 1:
             self.controller = GameLogic.getCurrentController()
+            self.controller.activate(self.suspMainAct)
+            self.controller.activate(self.suspHUDAct)
             self.controller.activate(self.goActuator)
-            self.controller.activate(self.endActuator)
-        
+ 
        
         
     def clips(self,msg):
