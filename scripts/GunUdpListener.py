@@ -11,16 +11,17 @@ class GunUdpHandler(object):
     fff - xyz of the gyro
     '''
     def __init__(self):
-        self.protocolFormat = '<fff'
+        self.protocolFormat = '<ffIILL'
         self.log = Logging("GunUDPHandler","Debug")
         self.log.msg("Init Completed.")
         
     def parse(self,rawData):
         try:
             data = struct.unpack(self.protocolFormat,rawData)
-            return str(data[0])+','+str(data[1])+','+str(data[2])
-        except:
-            self.log.msg("error")
+            #self.log.msg("data: "+str(data[0])+" "+str(data[1]))
+            return str(data[0])+','+str(data[1])+','+str(data[2])+','+str(data[3])+','+str(data[4])+','+str(data[5])
+        except Exception as e:
+            self.log.msg("error: "+str(e))
         
 class GunUdpListener(object):
     def __init__(self):

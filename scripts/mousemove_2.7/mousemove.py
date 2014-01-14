@@ -381,6 +381,8 @@ class Mouselook:
 		horizontal = self.move[0] * sensitivity * invert
 		vertical = self.move[1] * sensitivity * invert
 		
+		#msg(sensitivity," ",vertical," ",horizontal)
+		
 		### Set vertical rotation (X) and apply capping ###
 		self.verticalRotation += vertical
 		self.applyCap()
@@ -403,41 +405,46 @@ class Mouselook:
 	### "Get Property" Functions ###
 	def getWindowSize(self):
 		return (render.getWindowWidth(), render.getWindowHeight())
+	
+	
+	def gun(self):
+		pos = None;
+		gunpos = self.core.cont.sensors["GunPos"]
+		if(gunpos.positive):
+			gunData = [ i for i in gunpos.bodies[gunpos.subjects.index("GunPos")].split(',')]
+			
+			pitch = float(gunData[0])*-1
+			roll = float(gunData[1])*-1
+			
+			trigger = int(gunData[2])
+			wheel = int(gunData[3])
+			hat = int(gunData[4])
+			keys = int(gunData[5])
+			
+			realCenter = self.getCenter()
+			
+			def f(x):
+				return (x+5)/10
+			
+			pos = [f(roll),f(pitch)]
+			
+		else:
+			pos = logic.mouse.position
+		msg("pos ",pos[0]," ",pos[1])
+		return pos
 		
 	def getMovement(self):
-		gunpos = self.core.cont.sensors["GunPos"]
+		
 
 		if(self.props['usegunfeed']==False):
 			pos = logic.mouse.position
 		else:
-			if(gunpos.positive):
-				#comment
-				gunPos = [ i for i in gunpos.bodies[gunpos.subjects.index("GunPos")].split(',')]
-				
-				pos = [float(gunPos[0])/100,float(gunPos[2])/100]
-				msg("Gun ",pos[0]," ",pos[1])
-			else:
-				pos = logic.mouse.position
-				#msg("Mouse ",pos[0]," ",pos[1])
-				#msg(self.core.cont.sensors["GunPos"].positive,dir(self.core.cont.sensors["GunPos"]))
-				pass
+			pos = self.gun()
 					
-		#msg("Pos",pos)
-		
-		if (pos[0]>self.maxMouseX):
-			self.maxMouseX = pos[0]
-		if (pos[0]<self.minMouseX):
-			self.minMouseX = pos[0]
-		if (pos[1]>self.maxMouseY):
-			self.maxMouseY = pos[1]
-		if (pos[1]<self.minMouseY):
-			self.minMouseY = pos[1]
-		
-		#msg(self.minMouseX," ",self.maxMouseX," ",self.minMouseY," ",self.maxMouseY)
-			
-		
 		realCenter = self.getCenter()
 		move = [realCenter[0] - pos[0], realCenter[1] - pos[1]]
+		
+		#msg(self.size)
 		
 		xMove = int(self.size[0] * move[0])
 		yMove = int(self.size[1] * move[1])
