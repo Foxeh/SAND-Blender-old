@@ -1,5 +1,6 @@
 import bge
-
+import bpy
+import GameLogic
 from Logging import Logging
     
 class HUD(object):
@@ -14,6 +15,10 @@ class HUD(object):
         self.enemyStatus = self.scene.objects["EnemyStatus"]
         self.ammoStatus = self.scene.objects["AmmoStatus"]
         self.clipStatus = self.scene.objects["ClipStatus"]
+        self.goActuator = self.own.actuators["GameOverAct"]
+        self.suspMainAct = self.own.actuators["SuspMain"]
+        self.suspHUDAct = self.own.actuators["SuspHUD"]
+        self.testStatus = self.scene.objects["Tester"]
         self.msgSensor = self.cont.sensors["HUDMessage"]
         self.enemyCount = 0
         self.ammoCount = 0
@@ -25,12 +30,13 @@ class HUD(object):
         
     def update(self):
         self._handleMessage()
+
         
     def _handleMessage(self):
         '''
         separate out the message bodies and process them to update the HUD
         '''
-        
+
         if self.msgSensor.positive :  
             for subject in self.msgSensor.subjects:
                 f = None
@@ -44,10 +50,21 @@ class HUD(object):
                 else:
                     #self.log.msg("Missing function for %s"%(subject))
                     pass
+
             
     def ammo(self,msg):
         self.ammoCount = int(msg)
         self.ammoStatus.text = "Ammo: "+str(self.ammoCount)
+        self.testStatus.text = str(self.ammoCount)
+        
+        if int(msg) == 1:
+            self.controller = GameLogic.getCurrentController()
+            self.controller.activate(self.suspMainAct)
+            self.controller.activate(self.suspHUDAct)
+            self.controller.activate(self.goActuator)
+ 
+       
+        
     def clips(self,msg):
         self.clipCount = int(msg)
         self.clipStatus.text = "Clips: "+str(self.clipCount)
