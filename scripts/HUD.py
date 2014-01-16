@@ -1,5 +1,5 @@
 import bge
-import bpy
+#import bpy
 import GameLogic
 from Logging import Logging
     

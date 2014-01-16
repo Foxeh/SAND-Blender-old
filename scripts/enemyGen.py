@@ -36,7 +36,7 @@ for j in range(1, 2):
         src = int(dot2dec(i))
         
         dst = int(dot2dec(dstnodes[random.randint(0, 4)])) 
-        print src, dst
+#        print src, dst
         data = struct.pack('<LL', src, dst)
         # print data
         sock.sendto(data, (HOST, PORT))
