@@ -1,7 +1,7 @@
 from bge import logic
 import random
 import pickle
-
+from Logging import Logging
 
 
 def _saveScoresToFile(list_scores, string_filepath):
@@ -43,8 +43,8 @@ def display():
     # TODO: Remove random, and get scores from game
     tempInitials = logic.globalDict["initials"]
     initials = tempInitials[:3].upper()
-    score = random.randrange(0, 25)
-    
+    score = logic.globalDict["score"]
+
     
     # Save data
     tup_entry = (initials, score)
@@ -60,7 +60,7 @@ def display():
     # Display scores
     for entry, i in zip(scores, range(len(scores))):
         new_writer = scene.addObject(writer, writer)
-        new_writer["Text"] = "{:d}. {:s} - {:d}".format(i + 1, entry[0], entry[1])
+        new_writer["Text"] = "{:d}. {:s} - {:.0f}".format(i + 1, entry[0], entry[1])
         
         new_writer.worldPosition.y -= 1.10 * i
         
@@ -73,4 +73,12 @@ def setInitials():
     scene = logic.getCurrentScene()
     initials = scene.objects["Initials"]
     logic.globalDict["initials"] = initials["Text"].strip()
+    
+
+def setScore():
+    
+    cont = logic.getCurrentController()
+    score = cont.owner
+    scoreValue = score["Text"]
+    logic.globalDict["score"] = float(scoreValue[6:])
     

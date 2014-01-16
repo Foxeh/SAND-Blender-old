@@ -77,6 +77,8 @@ class HUD(object):
             time = float(self.timer.text) if float(self.timer.text)>0 else 1
             self.score =  math.floor((self.enemyHit/time)*100)
             self.scoreStatus.text = "Score: "+str(self.score)
+            
+
         except Exception as e:
             pass
         
