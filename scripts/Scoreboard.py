@@ -5,6 +5,8 @@ def display():
     scene = logic.getCurrentScene()
     writer = scene.objects["Writer"]
     
+    # Assigning rank and score temporarily
+    # TODO: Get score from game, rank them, and save to disk
     rank = 1
     initials = logic.globalDict["initials"]
     score = 15
