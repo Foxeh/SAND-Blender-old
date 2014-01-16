@@ -56,12 +56,13 @@ def display():
     scores.reverse()
     
     
+    
     # Display scores
     for entry, i in zip(scores, range(len(scores))):
         new_writer = scene.addObject(writer, writer)
         new_writer["Text"] = "{:d}. {:s} - {:d}".format(i + 1, entry[0], entry[1])
         
-        new_writer.worldPosition.y -= 1.25 * i
+        new_writer.worldPosition.y -= 1.10 * i
         
     _saveScoresToFile(scores, "scores.scr")
     
