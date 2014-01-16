@@ -413,7 +413,7 @@ class Mouselook:
 	def getMovement(self):		
 
 		if(self.props['usegunfeed']==False):
-			msg("here")
+			#msg("here")
 			pos = logic.mouse.position
 		else:
 			pos = self.core.gun.pos()
@@ -743,8 +743,10 @@ class Controls:
 		self.jump = key[events.SPACEKEY]
 		
 		lefthanded = self.core.props['lefthanded']
+		#msg(self.core.props)
 		#TODO: refactor how the controls class works. Forcing gun here.
-		useGun = True
+		self.propsML = self.core.getProperties('ml')
+		useGun = self.propsML["usegunfeed"]
 		
 		if useGun:
 			self.core.gun.layout(self)
