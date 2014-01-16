@@ -21,6 +21,7 @@ class GunControl(object):
         self.aim = self.cont.sensors["Ray"]
         self.triggerPull = self.cont.sensors["Trigger"]
         self.gun = self.own.parent
+        self._updateHUD()
         self.log.msg("Init Completed.")
         
     def update(self):

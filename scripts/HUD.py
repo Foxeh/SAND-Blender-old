@@ -18,11 +18,14 @@ class HUD(object):
         self.goActuator = self.own.actuators["GameOverAct"]
         self.suspMainAct = self.own.actuators["SuspMain"]
         self.suspHUDAct = self.own.actuators["SuspHUD"]
-        self.testStatus = self.scene.objects["Tester"]
+        self.scoreStatus = self.scene.objects["ScoreStatus"]
+        
         self.msgSensor = self.cont.sensors["HUDMessage"]
         self.enemyCount = 0
         self.ammoCount = 0
         self.clipCount = 0
+        self.score = 0
+        self.enemyHit = 0
         self.enemy(0)
         self.ammo(0)
         self.clips(0)
@@ -30,7 +33,7 @@ class HUD(object):
         
     def update(self):
         self._handleMessage()
-
+        self.calcScore()
         
     def _handleMessage(self):
         '''
@@ -55,20 +58,24 @@ class HUD(object):
     def ammo(self,msg):
         self.ammoCount = int(msg)
         self.ammoStatus.text = "Ammo: "+str(self.ammoCount)
-        self.testStatus.text = str(self.ammoCount)
         
         if int(msg) == 1:
             self.controller = GameLogic.getCurrentController()
             self.controller.activate(self.suspMainAct)
             self.controller.activate(self.suspHUDAct)
             self.controller.activate(self.goActuator)
- 
-       
+            
         
     def clips(self,msg):
         self.clipCount = int(msg)
         self.clipStatus.text = "Clips: "+str(self.clipCount)
+    
+    def calcScore(self): 
+        self.score =  self.enemyHit
+        self.scoreStatus.text = "Score: "+str(self.enemyCount)
+        
     def enemy(self,msg):
+        self.enemyHit +=1
         self.enemyCount = self.enemyCount + int(msg)
         self.enemyStatus.text = "Enemy: "+str(self.enemyCount)
     
