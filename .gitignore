@@ -2,3 +2,5 @@
 /*.pydevproject
 
 images/GameOverSplash.psd
+
+__pycache__/Logging.cpython-33.pyc
