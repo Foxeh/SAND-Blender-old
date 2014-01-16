@@ -37,9 +37,7 @@ class GunHID(object):
     def layout(self,controls): 
         
         if(self.recieveGunMsg()):  
-            
-
-            
+        
             controls.forward = 2 if (self.hat&self.gun['hatForward']==self.gun['hatForward']) else 0       
             controls.back = 2 if (self.hat&self.gun['hatBack']==self.gun['hatBack']) else 0
             controls.left = 2 if (self.hat&self.gun['hatLeft']==self.gun['hatLeft']) else 0
@@ -74,7 +72,7 @@ class GunHID(object):
             self.keys = int(float(gunData[5]))
             
             if(self.trigger):
-                self.log.msg("trigger")
+                #self.log.msg("trigger")
                 logic.sendMessage("Trigger", '1') 
             
             #self.log.msg("hat: "+str(self.hat)) 
