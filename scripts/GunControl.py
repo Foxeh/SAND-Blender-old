@@ -19,6 +19,7 @@ class GunControl(object):
         self.reload = self.cont.sensors["Reload"]
         self.shoot = self.cont.sensors["Shoot"]
         self.aim = self.cont.sensors["Ray"]
+        self.triggerPull = self.cont.sensors["Trigger"]
         self.gun = self.own.parent
         self.log.msg("Init Completed.")
         
@@ -32,7 +33,7 @@ class GunControl(object):
             self.gun.state = 1 #flip the gun back to shoot mode
             
         if self.bullets > 0:    
-            if self.shoot.positive:
+            if self.shoot.positive or self.triggerPull.positive:
                 self._shoot()
         else:
             self.gun.state = 2 #gun is empty

@@ -7,11 +7,8 @@ import struct
 from Logging import Logging
 
 class GunUdpHandler(object):
-    '''
-    fff - xyz of the gyro
-    '''
     def __init__(self):
-        self.protocolFormat = '<ffIILL'
+        self.protocolFormat = '<ffffff'
         self.log = Logging("GunUDPHandler","Debug")
         self.log.msg("Init Completed.")
         
