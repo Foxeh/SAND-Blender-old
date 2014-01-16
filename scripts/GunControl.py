@@ -62,6 +62,9 @@ class GunControl(object):
     def _updateHUD(self):
         bge.logic.sendMessage("Ammo", str(self.bullets)) 
         bge.logic.sendMessage("Clips", str(self.magazines)) 
+        if self.magazines == 0 and self.bullets==0:
+            bge.logic.sendMessage("GameOver", "GameOver")
+             
     
     def _activate(self,actuator):
         self.cont.activate(actuator)

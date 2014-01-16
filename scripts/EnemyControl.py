@@ -24,7 +24,7 @@ message_sensor = cont.sensors["SpawnEnemyMessage"]
 if message_sensor.positive :   
     move_data = message_sensor.bodies[message_sensor.subjects.index("SpawnEnemy")]
     moveProps = move_data.split(',')
-    print("message sensor:",moveProps[1])
+    #print("message sensor:",moveProps[1])
     target = finder.findObjects(finder.byNameContains, [moveProps[1]], "")[0]
     enemyMotion = enemy.actuators["Steering"]
     enemyMotion.target = target  

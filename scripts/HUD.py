@@ -1,6 +1,7 @@
 import bge
 #import bpy
 import GameLogic
+import math
 from Logging import Logging
     
 class HUD(object):
@@ -19,6 +20,7 @@ class HUD(object):
         self.suspMainAct = self.own.actuators["SuspMain"]
         self.suspHUDAct = self.own.actuators["SuspHUD"]
         self.scoreStatus = self.scene.objects["ScoreStatus"]
+        self.timer = self.scene.objects["Timer"]
         
         self.msgSensor = self.cont.sensors["HUDMessage"]
         self.enemyCount = 0
@@ -59,7 +61,7 @@ class HUD(object):
         self.ammoCount = int(msg)
         self.ammoStatus.text = "Ammo: "+str(self.ammoCount)
         
-        if int(msg) == 1:
+    def gameover(self,msg):
             self.controller = GameLogic.getCurrentController()
             self.controller.activate(self.suspMainAct)
             self.controller.activate(self.suspHUDAct)
@@ -71,11 +73,18 @@ class HUD(object):
         self.clipStatus.text = "Clips: "+str(self.clipCount)
     
     def calcScore(self): 
-        self.score =  self.enemyHit
-        self.scoreStatus.text = "Score: "+str(self.enemyCount)
+        try:
+            time = float(self.timer.text) if float(self.timer.text)>0 else 1
+            self.score =  math.floor((self.enemyHit/time)*100)
+            self.scoreStatus.text = "Score: "+str(self.score)
+        except Exception as e:
+            pass
         
     def enemy(self,msg):
-        self.enemyHit +=1
+        if int(msg) == -1:
+            #self.log.msg(msg)
+            self.enemyHit +=1
+            
         self.enemyCount = self.enemyCount + int(msg)
         self.enemyStatus.text = "Enemy: "+str(self.enemyCount)
     
