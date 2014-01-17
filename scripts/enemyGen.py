@@ -30,17 +30,25 @@ HOST, PORT = "localhost", 10001
 
 # SOCK_DGRAM is the socket type to use for UDP sockets
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  
-for j in range(1, 100):
+
+# Generate random number of bots
+maxBots = random.randint(50, 200)
+print("Max # of Bots: " + str(maxBots))
+
+for j in range(1, maxBots):
     for i in srcnodes:
-        src = int(dot2dec(i))
+        src = int(dot2dec(srcnodes[random.randint(0, 4)]))
         
         dst = int(dot2dec(dstnodes[random.randint(0, 4)])) 
 #        print src, dst
         data = struct.pack('<LL', src, dst)
         # print data
         sock.sendto(data, (HOST, PORT))
-        time.sleep(0.5)  # estimate Frame rate, might want to use some type of sync btw client and server
+        
+        # Random time
+        genDelay = random.randint(0, 10)
+        time.sleep(genDelay)  # estimate Frame rate, might want to use some type of sync btw client and server
+        print("Bot Generated")
 
 data = struct.pack('<LL', 0, 0)
 sock.sendto(data, (HOST, PORT))
