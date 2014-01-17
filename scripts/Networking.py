@@ -31,7 +31,7 @@ class ProtocolHandler(object):
         
 class Networking(object):
     def __init__(self):
-        self.host = "localhost"
+        self.host = "0.0.0.0"
         self.port = 10001
         self.protocol = ProtocolHandler()
         self.socketClient = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
