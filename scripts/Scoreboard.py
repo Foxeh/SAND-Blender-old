@@ -2,6 +2,7 @@ from bge import logic
 import random
 import pickle
 from Logging import Logging
+import os
 
 
 def _saveScoresToFile(list_scores, string_filepath):
@@ -30,7 +31,7 @@ def _loadScoresFromFile(string_filepath):
 
 
 
-scores = _loadScoresFromFile("scores.scr")
+scores = _loadScoresFromFile("/Users/GRAPHICSDEMO/Desktop/scores.txt")
 
 def display():
     
@@ -64,7 +65,8 @@ def display():
         
         new_writer.worldPosition.y -= 1.10 * i
         
-    _saveScoresToFile(scores, "scores.scr")
+
+    _saveScoresToFile(scores, "/Users/GRAPHICSDEMO/Desktop/scores.txt")
     
     
     
