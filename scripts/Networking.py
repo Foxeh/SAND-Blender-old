@@ -31,7 +31,7 @@ class ProtocolHandler(object):
         
 class Networking(object):
     def __init__(self):
-        self.host = "localhost"
+        self.host = "0.0.0.0"
         self.port = 10001
         self.protocol = ProtocolHandler()
         self.socketClient = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
@@ -45,7 +45,7 @@ class Networking(object):
         try:      
             rawData, SRIP = self.socketClient.recvfrom(256)
             data = self.protocol.parse(rawData)
-            #self.log.msg(data)
+            self.log.msg(data)
             bge.logic.sendMessage("SpawnEnemy", data, "Source", "Source")                  
         except :
             pass

@@ -32,7 +32,7 @@ HOST, PORT = "localhost", 10001
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Generate random number of bots
-maxBots = random.randint(50, 200)
+maxBots = random.randint(400, 700)
 print("Max # of Bots: " + str(maxBots))
 
 for j in range(1, maxBots):
@@ -46,9 +46,9 @@ for j in range(1, maxBots):
         sock.sendto(data, (HOST, PORT))
         
         # Random time
-        genDelay = random.randint(0, 10)
+        genDelay = random.randint(0, 5)
         time.sleep(genDelay)  # estimate Frame rate, might want to use some type of sync btw client and server
-        print("Bot Generated")
+        print("Bot Generated "+str(i)+" "+str(j))
 
 data = struct.pack('<LL', 0, 0)
 sock.sendto(data, (HOST, PORT))
