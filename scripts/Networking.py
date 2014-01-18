@@ -45,8 +45,8 @@ class Networking(object):
         try:      
             rawData, SRIP = self.socketClient.recvfrom(256)
             data = self.protocol.parse(rawData)
-            self.log.msg(data)
-            bge.logic.sendMessage("SpawnEnemy", data, "Source", "Source")                  
+            #self.log.msg(data)
+            bge.logic.sendMessage("SpawnEnemy", data)                  
         except :
             pass
         
