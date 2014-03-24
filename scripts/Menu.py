@@ -8,9 +8,6 @@ brick set to True Level Triggering (```) so the scene control update method fire
 
 '''
 import bge
-import finder
-from Networking import Networking
-from GunUdpListener import GunUdpListener
 from Logging import Logging
     
 class Menu(object):
@@ -24,15 +21,13 @@ class Menu(object):
  
         self.log = Logging("Menu","Debug")
         self.startGame = self.cont.actuators['StartGame']
-        self.startGame.scene="Main"
+        self.startGame.scene="Game"
         self.mouse = self.cont.sensors['Mouse']
-        self.trigger = self.cont.sensors['Trigger']
         self.log.msg('init completed')
         
     def update(self):
         
-        if self.mouse.positive or self.trigger.positive:
-            self.log.msg('here')
+        if self.mouse.positive:
             self.cont.activate(self.startGame)
     
 def main():

@@ -104,7 +104,7 @@ dm{
 from bge import logic, render, events
 from mathutils import Vector
 import math
-from GunHID import GunHID
+#from GunHID import GunHID
 
 # MouseMove Core
 class Core:
@@ -123,7 +123,7 @@ class Core:
 		self.configTypes = cfg[1]
 		
 		self.props = self.getProperties('mmc')
-		self.gun = GunHID(self)
+		#self.gun = GunHID(self)
 		self.controls = Controls(self)
 
 	

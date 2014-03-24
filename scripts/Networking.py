@@ -1,10 +1,11 @@
 """
 Game networking class to handle UDP comms from server
 """
-import bge #Import game engine functions
+
 import socket
 import struct
 from Logging import Logging
+from Messages import Messages,Message
 
 class ProtocolHandler(object):
     '''
@@ -21,16 +22,25 @@ class ProtocolHandler(object):
         
     def parse(self,rawData):
         data = struct.unpack(self.protocolFormat,rawData)
-        return str(data[0])+","+str(data[1])
+          
+        payload = {}
+        payload['source'] = self._dec2dot(data[0])
+        payload['dest'] = self._dec2dot(data[1])
+        #TODO: define the rest of the network data protocol here.....
+        
+        msg = Message("networkdata",payload)
+        
+        return msg
             
-    def _dec2dot(numbericIP):
+    def _dec2dot(self,numbericIP):
         if type(numbericIP) == types.StringType and not numbericIP.isdigit() :
             return None
         numIP = long(numbericIP)
         return "%d.%d.%d.%d" % ((numIP>>24)&0xFF, (numIP>>16)&0xFF, (numIP>>8)&0xFF, numIP&0xFF)
         
 class Networking(object):
-    def __init__(self):
+    def __init__(self,cont=None):
+        self.cont = cont
         self.host = "0.0.0.0"
         self.port = 10001
         self.protocol = ProtocolHandler()
@@ -38,6 +48,9 @@ class Networking(object):
         self.socketClient.bind((self.host, self.port))
         self.socketClient.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 256)
         self.socketClient.setblocking(0)
+        
+        self.messages = Messages(self.cont,self)
+        
         self.log = Logging("Networking","Debug")
         self.log.msg("Init Completed.")
         
@@ -45,8 +58,13 @@ class Networking(object):
         try:      
             rawData, SRIP = self.socketClient.recvfrom(256)
             data = self.protocol.parse(rawData)
-            #self.log.msg(data)
-            bge.logic.sendMessage("SpawnEnemy", data)                  
+            self.log.msg(data)
+            #bge.logic.sendMessage("SpawnEnemy", data) 
+            self.messages.send(msg)                 
         except :
             pass
+        
+        
+        
+        
         

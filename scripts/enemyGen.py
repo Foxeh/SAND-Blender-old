@@ -26,7 +26,7 @@ srcnodes = ["192.168.100.120", "192.168.100.121", "192.168.100.122", "192.168.10
 dstnodes = ["192.168.100.124", "192.168.100.123", "192.168.100.120", "192.168.100.122", "192.168.100.121"]
 
 # replace localhost with network name of game machine defined in game blend
-HOST, PORT = "localhost", 10001  
+HOST, PORT = "192.168.100.92", 10001  
 
 # SOCK_DGRAM is the socket type to use for UDP sockets
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
