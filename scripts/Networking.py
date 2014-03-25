@@ -21,18 +21,21 @@ class ProtocolHandler(object):
         self.log.msg("Init Completed.")
         
     def parse(self,rawData):
+        #
         data = struct.unpack(self.protocolFormat,rawData)
-          
+        
         payload = {}
-        payload['source'] = self._dec2dot(data[0])
-        payload['dest'] = self._dec2dot(data[1])
+        payload['source'] = data[0]
+        payload['dest'] = data[1]
+        
         #TODO: define the rest of the network data protocol here.....
         
         msg = Message("networkdata",payload)
-        
+       
         return msg
             
     def _dec2dot(self,numbericIP):
+        #TODO: this doesn't work.
         if type(numbericIP) == types.StringType and not numbericIP.isdigit() :
             return None
         numIP = long(numbericIP)
@@ -42,7 +45,7 @@ class Networking(object):
     def __init__(self,cont=None):
         self.cont = cont
         self.host = "0.0.0.0"
-        self.port = 10001
+        self.port = 10002
         self.protocol = ProtocolHandler()
         self.socketClient = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         self.socketClient.bind((self.host, self.port))
@@ -55,12 +58,11 @@ class Networking(object):
         self.log.msg("Init Completed.")
         
     def update(self):
+        #self.log.msg("update")
         try:      
             rawData, SRIP = self.socketClient.recvfrom(256)
             data = self.protocol.parse(rawData)
-            self.log.msg(data)
-            #bge.logic.sendMessage("SpawnEnemy", data) 
-            self.messages.send(msg)                 
+            self.messages.send(data)                 
         except :
             pass
         

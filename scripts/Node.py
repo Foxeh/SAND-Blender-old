@@ -32,9 +32,14 @@ class Node(object):
         self.messages.update()
 
     def addpacket(self,msg):
-        #self.log.msg(msg)
-        #set the packet's target prop of the steering actuator
-        self.cont.activate(self.addPacket)
+        if self.own.parent['ip'] == msg['source']:                   
+            packetSteering = self.packet.actuators["Steering"]
+            targets = finder.findObjects(finder.byProperty,['ip'],"Game")
+            self.log.msg(targets)
+            for target in targets:
+                if target['ip'] == msg['dest']:
+                    packetSteering.target = target 
+                    self.cont.activate(self.addPacket)
     
 
 def main():

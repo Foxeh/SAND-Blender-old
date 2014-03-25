@@ -46,7 +46,7 @@ for j in range(1, maxBots):
         sock.sendto(data, (HOST, PORT))
         
         # Random time
-        genDelay = random.randint(0, 5)
+        genDelay = random.randint(0, 2)
         time.sleep(genDelay)  # estimate Frame rate, might want to use some type of sync btw client and server
         print("Bot Generated "+str(i)+" "+str(j))
 
