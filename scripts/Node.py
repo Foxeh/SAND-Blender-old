@@ -35,7 +35,7 @@ class Node(object):
         if self.own.parent['ip'] == msg['source']:                   
             packetSteering = self.packet.actuators["Steering"]
             targets = finder.findObjects(finder.byProperty,['ip'],"Game")
-            self.log.msg(targets)
+            #self.log.msg(targets)
             for target in targets:
                 if target['ip'] == msg['dest']:
                     packetSteering.target = target 

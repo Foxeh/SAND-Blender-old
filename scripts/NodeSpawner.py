@@ -6,6 +6,8 @@ from random import randint
 import finder
 from Messages import Messages, Message
 
+import GameLogic
+
 class NodeSpawner(object):
     def __init__(self,cont):
         self.log = Logging("NodeSpawner","Debug")
@@ -30,7 +32,7 @@ class NodeSpawner(object):
         self.y = 0.0
         self.z = 0.0
         
-        self.nodes = {}
+        GameLogic.globalDict["matrix.nodes"] = self.nodes = {}
         
         
         self.log.msg("Init Completed.")
