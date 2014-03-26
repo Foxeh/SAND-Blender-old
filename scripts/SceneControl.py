@@ -25,10 +25,10 @@ class SceneControl(object):
         self.sceneUpdates = []
         self.log = Logging("SceneControl","Debug")
         #set up network socket  
-        
+        self.keyboard = self.own.sensors['Keyboard']
         self.cont.activate(self.own.actuators["HUD"])     
-        
-        self.sceneUpdates.append(Networking(self.cont))
+        self.network = Networking(self.cont)
+        self.sceneUpdates.append(self.network)
         
         #self.sceneUpdates.append(GunUdpListener())
         #add the HUD
@@ -40,6 +40,9 @@ class SceneControl(object):
         #self.scene.active_camera =  self.scene.objects["FPS Camera"]
         
     def update(self):
+        if self.keyboard.positive:
+            self.network.close()
+            self.cont.activate(self.own.actuators["QuitGame"]) 
         for o in self.sceneUpdates:
             o.update()
     

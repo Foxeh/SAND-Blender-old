@@ -1,5 +1,5 @@
 import bge 
-
+import GameLogic
 from Logging import Logging
 from Messages import Messages
 from mathutils import Vector
@@ -22,25 +22,33 @@ class Node(object):
         #this is the packet object to spawn.
         self.packet = finder.findObjects(finder.byNameContains, ["Packet"], None, "objectsInactive")[0]
         #this is the add packet actuator
-        self.addPacket = self.cont.actuators['AddPacket']
-        self.addPacket.object = self.packet
-        
+        #self.addPacket = self.cont.actuators['AddPacket']
+        #self.addPacket.object = self.packet
+        self.packets = {}
+        self.packetIdx = 0
         self.log.msg("Init Completed.")
         
     def update(self):
-        #self.log.msg("update")
         self.messages.update()
 
     def addpacket(self,msg):
         if self.own.parent['ip'] == msg['source']:                   
-            packetSteering = self.packet.actuators["Steering"]
-            targets = finder.findObjects(finder.byProperty,['ip'],"Game")
-            #self.log.msg(targets)
-            for target in targets:
-                if target['ip'] == msg['dest']:
-                    packetSteering.target = target 
-                    self.cont.activate(self.addPacket)
-    
+            packet = self.createPacket(msg)
+            packet['source'] = msg['source']
+            packet['dest'] = msg['dest']
+            packet['srcDstFlow'] = msg['srcDstFlow']
+            packet['idx'] = self.packetIdx
+            self.packetIdx = self.packetIdx + 1
+            
+    def createPacket(self,msg):
+        packetSteering = self.packet.actuators["Steering"]
+        targets = GameLogic.globalDict["matrix.nodes"]
+        target = targets[msg['dest']]          
+        packetSteering.target = target 
+        #self.cont.activate(self.addPacket) 
+        return self.scene.addObject(self.packet, self.own,0) 
+        #return self.addPacket.objectLastCreated  
+        #return self.addPacket.instantAddObject()
 
 def main():
     cont = bge.logic.getCurrentController()

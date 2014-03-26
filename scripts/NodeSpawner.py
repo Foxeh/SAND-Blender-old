@@ -19,14 +19,14 @@ class NodeSpawner(object):
         
         #this is the packet object to spawn.
         self.Node = finder.findObjects(finder.byNameContains, ["Node"], None, "objectsInactive")[0]
-        self.packet = finder.findObjects(finder.byNameContains, ["Packet"], None, "objectsInactive")[0]
+        #self.packet = finder.findObjects(finder.byNameContains, ["Packet"], None, "objectsInactive")[0]
 
         
         #this is the add packet actuator
-        self.addNode = self.cont.actuators['AddNode']
+        #self.addNode = self.cont.actuators['AddNode']
         self.radar = self.cont.sensors["Radar"]
         
-        self.addNode.object = self.Node
+        #self.addNode.object = self.Node
         
         self.x = 0.0
         self.y = 0.0
@@ -40,32 +40,42 @@ class NodeSpawner(object):
     def networkdata(self,data):
         #this is called by the message handler
         if data['source'] not in self.nodes:
-            self.x = self.x + randint(-32,60)
-            self.y = self.y + randint(-32,60)
+            self.x = randint(-120,120)
+            self.y = randint(-120,120)
             vec = Vector((self.x,self.y,self.z))
             self.own.localPosition = vec          
             self.nodes[data['source']] = self.createNode()
-            self.nodes[data['source']]['ip'] = data['source']
-            
-            #self.log.msg(self.nodes[data['source']]['ip'])
+            self.nodes[data['source']]['ip'] = data['source']           
+            self.log.msg("Adding Source Node %i"%data['source'])
             
         if data['dest'] not in self.nodes:
-            self.x = self.x + randint(-32,60)
-            self.y = self.y + randint(-32,60)
+            self.x = randint(-120,120)
+            self.y = randint(-120,120)
             vec = Vector((self.x,self.y,self.z))
             self.own.localPosition = vec          
             self.nodes[data['dest']] = self.createNode()
             self.nodes[data['dest']]['ip'] = data['dest']
-            #self.log.msg("Adding dest node")
+            self.log.msg("Adding Dest Node %i"%data['dest'])
         
-        msg = Message("addpacket",{'dest':data['dest'], 'source':data['source']})
+        msg = Message("addpacket",{'dest':data['dest'], 'source':data['source'],'srcDstFlow':data['srcDstFlow']})
         self.messages.send(msg)
+        
+        msg = Message("changenodemesh",{'dest':data['dest'], 'source':data['source'],'srcDstFlow':data['srcDstFlow']})
+        self.messages.send(msg)
+        
+        #if data['srcDstFlow'] == 0:
+        #    self.log.msg("Mesh Change to Green")           
+        #    msg = Message("changemesh",{'mesh':'GreenPkt'})
+        #
+        #    self.messages.send(msg)
+                    
         
         
     def createNode(self):
         #objectLastCreated
-        self.cont.activate(self.addNode)
-        return self.addNode.objectLastCreated
+        #self.cont.activate(self.addNode)
+        #return self.addNode.objectLastCreated
+        return self.scene.addObject(self.Node, self.own,0) 
         
             
     def update(self):

@@ -16,7 +16,7 @@ class ProtocolHandler(object):
         L = Destination IP (integer)
     '''
     def __init__(self):
-        self.protocolFormat = '<LL'
+        self.protocolFormat = '<LLLLLL'
         self.log = Logging("ProtocolHandler","Debug")
         self.log.msg("Init Completed.")
         
@@ -27,6 +27,10 @@ class ProtocolHandler(object):
         payload = {}
         payload['source'] = data[0]
         payload['dest'] = data[1]
+        payload['srcPort'] = data[2]
+        payload['destPort'] = data[3]
+        payload['flowTime'] = data[4]
+        payload['srcDstFlow'] = data[5]
         
         #TODO: define the rest of the network data protocol here.....
         
@@ -65,6 +69,9 @@ class Networking(object):
             self.messages.send(data)                 
         except :
             pass
+    def close(self):
+        self.log.msg("Closing network")
+        self.socketClient.close()
         
         
         
