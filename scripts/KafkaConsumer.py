@@ -1,5 +1,5 @@
 from kafka.client import KafkaClient
-from kafka.consumer import SimpleConsumer
+from kafka import FetchRequest
 import socket
 import struct
 import math, random
@@ -32,12 +32,15 @@ class KafkaConsumer(object):
         try:
             while True:
                 #TODO:do we need to add a group name to the consumer???
-                consumer = SimpleConsumer(self.myKafka, "", "sand-results")
-                for message in consumer:
+                #consumer = SimpleConsumer(self.myKafka, "", "sand-results")
+                request = FetchRequest("sand-results", 0, 0, 1024)
+                (messages, nextRequest) = self.myKafka.get_message_set(request)
+                for message in messages:
                     data = json.loads(message)
                     print (data)
                     payload = self.parse(data)
                     self.sock.sendto(payload, (HOST, PORT))
+                print(nextRequest)
                 
         except KeyboardInterrupt:
             print "CTRL-C pressed"
