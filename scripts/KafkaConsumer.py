@@ -1,4 +1,5 @@
 from kafka.client import KafkaClient
+from kafka.consumer import SimpleConsumer
 import socket
 import struct
 import math, random
